@@ -1,0 +1,22 @@
+services:
+  - type: worker
+    name: trader-ia-pocketoption-feed
+    runtime: python
+    plan: starter
+    region: frankfurt
+    branch: audit/fix-tls-and-tests
+    buildCommand: pip install -r requirements.txt
+    startCommand: python worker_service.py
+    envVars:
+      - key: POCKETOPTION_SSID
+        sync: false
+      - key: TRADER_WORKER_SECRET
+        sync: false
+      - key: HATCHABLE_INGEST_URL
+        value: https://trader-ia-analise-e.hatchable.site/api/worker-ingest
+      - key: PO_ASSETS
+        value: EURUSD_otc,GBPUSD_otc
+      - key: PO_TIMEFRAME
+        value: 1m
+      - key: POLL_SECONDS
+        value: "30"
