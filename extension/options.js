@@ -1,0 +1,3 @@
+const ids=["apiUrl","apiToken","timeframe"];
+chrome.storage.local.get(ids,data=>ids.forEach(id=>{if(data[id])document.getElementById(id).value=data[id];}));
+document.getElementById("save").onclick=()=>{const data=Object.fromEntries(ids.map(id=>[id,document.getElementById(id).value.trim()]));chrome.storage.local.set(data,()=>{document.getElementById("message").textContent="Configurações salvas neste navegador.";});};
