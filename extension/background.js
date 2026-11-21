@@ -9,7 +9,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message?.type !== "TRADER_ANALYZE") return;
   (async () => {
     const cfg = await chrome.storage.local.get(["apiUrl","apiToken","timeframe"]);
-    if (!cfg.apiToken) throw new Error("Configure o token de acesso nas opções da extensão.");
+    if (!cfg.apiToken) throw new Error("Pareie a extensão com a plataforma nas opções antes de analisar.");
     if (!Array.isArray(message.candles) || message.candles.length < 30) throw new Error("Não consegui obter 30 candles do gráfico. Aguarde o gráfico carregar e tente novamente.");
     const response = await fetch(cfg.apiUrl || DEFAULT_API, {
       method:"POST", headers:{"Content-Type":"application/json","Authorization":"Bearer "+cfg.apiToken},
