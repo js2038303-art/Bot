@@ -49,9 +49,8 @@ async def stream_asset(client, session, symbol):
             async for closed, forming in client.get_candles_live(
                 symbol, period=TIMEFRAME_SECONDS, hours=2.0, max_rows=120
             ):
-                rows = list(closed or [])[-119:]
-                if forming:
-                    rows.append(forming)
+                # Analyze only fully closed candles; ignore the forming candle.
+                rows = list(closed or [])[-120:]
                 if len(rows) < 30:
                     continue
                 now = time.monotonic()
