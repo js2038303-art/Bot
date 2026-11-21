@@ -11,7 +11,7 @@ async def test_demo_live_fix():
     """Test that is_demo parameter is properly respected"""
 
     # Test SSID with demo=1 hardcoded (should be overridden by is_demo parameter)
-    demo_ssid = r'42["auth",{"session":"n1p5ah5u8t9438rbunpgrq0hlq","isDemo":1,"uid":72645361,"platform":1,"isFastHistory":true}]'
+    demo_ssid = r'42["auth",{"session":"TEST_SESSION_NOT_VALID","isDemo":1,"uid":12345678,"platform":1,"isFastHistory":true}]'
 
     print("Testing Demo/Live Mode Fix")
     print("=" * 50)
@@ -42,9 +42,9 @@ async def test_demo_live_fix():
 
     # Test 3: Raw session ID with demo mode
     print("\nTest: Raw session with is_demo=True")
-    raw_session = "n1p5ah5u8t9438rbunpgrq0hlq"
+    raw_session = "TEST_SESSION_NOT_VALID"
     client_raw_demo = AsyncPocketOptionClient(
-        ssid=raw_session, is_demo=True, uid=72645361
+        ssid=raw_session, is_demo=True, uid=12345678
     )
     formatted_raw_demo = client_raw_demo._format_session_message()
     parsed_raw_demo = json.loads(formatted_raw_demo[10:-1])
@@ -57,7 +57,7 @@ async def test_demo_live_fix():
     # Test 4: Raw session ID with live mode
     print("\nTest: Raw session with is_demo=False")
     client_raw_live = AsyncPocketOptionClient(
-        ssid=raw_session, is_demo=False, uid=72645361
+        ssid=raw_session, is_demo=False, uid=12345678
     )
     formatted_raw_live = client_raw_live._format_session_message()
     parsed_raw_live = json.loads(formatted_raw_live[10:-1])
