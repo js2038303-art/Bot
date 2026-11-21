@@ -14,7 +14,7 @@ async def test_ssid_formats():
     print("=" * 50)
 
     # Test 1: Complete SSID format (as provided by user)
-    complete_ssid = '42["auth",{"session":"n1p5ah5u8t9438rbunpgrq0hlq","isDemo":1,"uid":72645361,"platform":1,"isFastHistory":true}]'
+    complete_ssid = '42["auth",{"session":"TEST_SESSION_NOT_VALID","isDemo":1,"uid":12345678,"platform":1,"isFastHistory":true}]'
 
     print("Testing Complete SSID Format")
     print(f"Input: {complete_ssid}")
@@ -33,13 +33,13 @@ async def test_ssid_formats():
     print()
 
     # Test 2: Raw session ID
-    raw_session = "n1p5ah5u8t9438rbunpgrq0hlq"
+    raw_session = "TEST_SESSION_NOT_VALID"
 
     print("Testing Raw Session ID")
     print(f"Input: {raw_session}")
 
     client2 = AsyncPocketOptionClient(
-        ssid=raw_session, is_demo=True, uid=72645361, platform=1, is_fast_history=True
+        ssid=raw_session, is_demo=True, uid=12345678, platform=1, is_fast_history=True
     )
 
     print(f" Session: {client2.session_id}")
@@ -122,7 +122,7 @@ async def test_real_connection_simulation():
     print("=" * 40)
 
     # Example with real-looking SSID format
-    realistic_ssid = '42["auth",{"session":"a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6","isDemo":1,"uid":72645361,"platform":1,"isFastHistory":true}]'
+    realistic_ssid = '42["auth",{"session":"a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6","isDemo":1,"uid":12345678,"platform":1,"isFastHistory":true}]'
 
     client = AsyncPocketOptionClient(ssid=realistic_ssid)
 
