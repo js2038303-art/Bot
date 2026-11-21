@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "Trader IA — Pocket Option",
+  "version": "1.0.0",
+  "description": "Banner flutuante para leitura de candles e análise técnica com Gemini.",
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://pocketoption.com/*",
+    "https://*.pocketoption.com/*",
+    "https://trader-ia-analise-e.hatchable.site/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Trader IA",
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://pocketoption.com/*",
+        "https://*.pocketoption.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}
