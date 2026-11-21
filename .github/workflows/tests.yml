@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  test:
+  syntax:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,3 +16,43 @@ jobs:
       - run: python -m pip install --upgrade pip
       - run: pip install -r requirements.txt pytest
       - run: python -m compileall -q pocketoptionapi_async
+
+  pocketoption-demo-websocket:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Probe PocketOption demo WebSocket handshake (no account credentials)
+        run: |
+          python - <<'PY'
+          import asyncio
+          import ssl
+          import websockets.legacy.client
+
+          URL = "wss://demo-api-eu.po.market/socket.io/?EIO=4&transport=websocket"
+
+          async def main():
+              context = ssl.create_default_context()
+              async with websockets.legacy.client.connect(
+                  URL,
+                  ssl=context,
+                  open_timeout=15,
+                  close_timeout=5,
+                  ping_interval=None,
+                  extra_headers={
+                      "Origin": "https://pocketoption.com",
+                      "User-Agent": "Mozilla/5.0",
+                  },
+              ) as ws:
+                  packet = await asyncio.wait_for(ws.recv(), timeout=15)
+                  print("WebSocket conectado; pacote inicial recebido:", str(packet)[:300])
+                  if not str(packet).startswith("0"):
+                      raise RuntimeError("Servidor respondeu, mas o pacote inicial não tem o formato Engine.IO esperado.")
+                  print("HANDSHAKE_ENGINE_IO_OK")
+
+          asyncio.run(main())
+          PY
