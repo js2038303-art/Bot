@@ -164,9 +164,9 @@ class AsyncWebSocketClient:
                 logger.info(f"Attempting to connect to {url}")
 
                 # SSL context setup
-                ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-                ssl_context.check_hostname = False
-                ssl_context.verify_mode = ssl.CERT_NONE
+                # Keep certificate and hostname verification enabled.
+                # Disabling TLS verification makes the session vulnerable to interception.
+                ssl_context = ssl.create_default_context()
 
                 # Connect with timeout
                 ws = await asyncio.wait_for(
